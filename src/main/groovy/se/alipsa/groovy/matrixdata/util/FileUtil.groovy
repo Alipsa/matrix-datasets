@@ -71,4 +71,31 @@ class FileUtil {
       }
       return null
    }
+
+   /**
+    * Gets a reference to a file or folder in the classpath. Useful for getting test resources and
+    * other similar artifacts.
+    *
+    * @param name        the name of the resource, use / to separate path entities.
+    *                    Do NOT lead with a "/" unless you know what you are doing.
+    * @param encodingOpt optional encoding if something other than UTF-8 is needed.
+    * @return The resource as a file.
+    * @throws FileNotFoundException if the resource cannot be found.
+    */
+   static File getResourceFile(String name, String... encodingOpt) throws FileNotFoundException {
+      File file
+      try {
+         String path = getResourcePath(name, encodingOpt)
+         file = new File(path)
+      } catch (UnsupportedEncodingException e) {
+         throw new FileNotFoundException("Failed to find resource " + name);
+      }
+      return file
+   }
+
+   static String getResourcePath(String name, String... encodingOpt) throws UnsupportedEncodingException {
+      String encoding = encodingOpt.length > 0 ? encodingOpt[0] : "UTF-8"
+      URL url = getResourceUrl(name)
+      return URLDecoder.decode(url.getFile(), encoding)
+   }
 }
