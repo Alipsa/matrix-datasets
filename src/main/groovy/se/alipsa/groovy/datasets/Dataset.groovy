@@ -1,7 +1,7 @@
-package se.alipsa.groovy.matrixdata
+package se.alipsa.groovy.datasets
 
 import se.alipsa.groovy.matrix.Matrix
-import se.alipsa.groovy.matrixdata.util.FileUtil
+import se.alipsa.groovy.datasets.util.FileUtil
 
 class Dataset {
 

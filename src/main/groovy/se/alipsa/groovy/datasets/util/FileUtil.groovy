@@ -1,4 +1,4 @@
-package se.alipsa.groovy.matrixdata.util
+package se.alipsa.groovy.datasets.util
 
 import java.nio.file.Paths
 

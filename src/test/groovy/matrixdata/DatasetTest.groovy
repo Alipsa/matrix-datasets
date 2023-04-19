@@ -3,7 +3,7 @@ package matrixdata
 import static org.junit.jupiter.api.Assertions.*
 
 import org.junit.jupiter.api.Test
-import se.alipsa.groovy.matrixdata.*
+import se.alipsa.groovy.datasets.*
 import se.alipsa.groovy.matrix.*
 
 class DatasetTest {
