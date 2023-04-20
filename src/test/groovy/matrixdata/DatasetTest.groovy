@@ -22,5 +22,31 @@ class DatasetTest {
         def mtcars = Dataset.mtcars()
         assertEquals(32, mtcars.rowCount(), 'number of rows')
         assertEquals(12, mtcars.columnCount(), 'number of columns')
+        assertEquals(642.9, Stat.sum(mtcars['mpg']), 'sum of mpg')
+    }
+
+    @Test
+    void testPlantGrowth() {
+        def plantGrowth = Dataset.plantGrowth()
+        assertEquals(30, plantGrowth.rowCount())
+        assertEquals(3, plantGrowth.columnCount())
+        assertEquals(152.19, Stat.sum(plantGrowth['weight']), 'sum of weight')
+    }
+
+    @Test
+    void testToothGrowth() {
+        def toothGrowth = Dataset.toothGrowth()
+        assertEquals(60, toothGrowth.rowCount())
+        assertEquals(4, toothGrowth.columnCount())
+        assertEquals(1128.8, Stat.sum(toothGrowth['len']), 'sum of len')
+    }
+
+    @Test
+    void usArrests() {
+        def usArrests = Dataset.usArrests()
+        assertEquals(50, usArrests.rowCount())
+        assertEquals(5, usArrests.columnCount())
+        assertEquals(389.4, Stat.sum(usArrests['Murder']), 'sum of Murder')
+
     }
 }

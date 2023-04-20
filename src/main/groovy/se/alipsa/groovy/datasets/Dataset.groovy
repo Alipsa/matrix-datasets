@@ -6,8 +6,7 @@ import se.alipsa.groovy.datasets.util.FileUtil
 class Dataset {
 
     static Matrix iris() {
-        def iris = Matrix.create(url('/data/Iris.csv'))
-        iris = iris.convert(
+        return Matrix.create(url('/data/Iris.csv')).convert(
             Id: Integer,
             'Sepal Length': BigDecimal,
             'Sepal Width': BigDecimal,
@@ -15,13 +14,10 @@ class Dataset {
             'Petal Width': BigDecimal,
             Species: String
         )
-        iris.setName('iris')
-        return iris
     }
 
     static Matrix mtcars() {
-        def mtcars = Matrix.create(url('/data/mtcars.csv'))
-        mtcars = mtcars.convert(
+        return Matrix.create(url('/data/mtcars.csv')).convert(
                 model: String,
                 mpg: BigDecimal,
                 cyl: Integer,
@@ -35,20 +31,30 @@ class Dataset {
                 gear: Integer,
                 carb: Integer
         )
-        mtcars.setName('mtcars')
-        return mtcars
     }
 
     static Matrix plantGrowth() {
-        Matrix.create(url('/data/PlantGrowth.csv'))
+        return Matrix.create(url('/data/PlantGrowth.csv'), ',', '"').convert(
+                id: Integer,
+                weight: BigDecimal
+        )
     }
 
     static Matrix toothGrowth() {
-        Matrix.create(url('/data/ToothGrowth.csv'))
+        return Matrix.create(url('/data/ToothGrowth.csv'), ',', '"').convert(
+                id: Integer,
+                len: BigDecimal,
+                dose: BigDecimal
+        )
     }
 
     static Matrix usArrests() {
-        Matrix.create(url('/data/USArrests.csv'))
+        return Matrix.create(url('/data/USArrests.csv'), ',', '"').convert(
+                "Murder": BigDecimal,
+                "Assault": Integer,
+                "UrbanPop": Integer,
+                "Rape": BigDecimal
+        )
     }
 
     Matrix fromUrl(String url, String delimiter = ',') {
