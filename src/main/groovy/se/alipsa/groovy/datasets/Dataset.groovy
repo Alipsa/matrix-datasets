@@ -6,7 +6,7 @@ import se.alipsa.groovy.datasets.util.FileUtil
 class Dataset {
 
     static Matrix iris() {
-        return Matrix.create(url('/data/Iris.csv')).convert(
+        Matrix table = Matrix.create(url('/data/Iris.csv')).convert(
             Id: Integer,
             'Sepal Length': BigDecimal,
             'Sepal Width': BigDecimal,
@@ -14,10 +14,12 @@ class Dataset {
             'Petal Width': BigDecimal,
             Species: String
         )
+        table.setName('Iris')
+        return table
     }
 
     static Matrix mtcars() {
-        return Matrix.create(url('/data/mtcars.csv')).convert(
+        Matrix table = Matrix.create(url('/data/mtcars.csv')).convert(
                 model: String,
                 mpg: BigDecimal,
                 cyl: Integer,
@@ -31,30 +33,38 @@ class Dataset {
                 gear: Integer,
                 carb: Integer
         )
+        table.setName('mtcars')
+        return table
     }
 
     static Matrix plantGrowth() {
-        return Matrix.create(url('/data/PlantGrowth.csv'), ',', '"').convert(
+        Matrix table = Matrix.create(url('/data/PlantGrowth.csv'), ',', '"').convert(
                 id: Integer,
                 weight: BigDecimal
         )
+        table.setName('PlantGrowth')
+        return table
     }
 
     static Matrix toothGrowth() {
-        return Matrix.create(url('/data/ToothGrowth.csv'), ',', '"').convert(
+        Matrix table = Matrix.create(url('/data/ToothGrowth.csv'), ',', '"').convert(
                 id: Integer,
                 len: BigDecimal,
                 dose: BigDecimal
         )
+        table.setName('ToothGrowth')
+        return table
     }
 
     static Matrix usArrests() {
-        return Matrix.create(url('/data/USArrests.csv'), ',', '"').convert(
+        Matrix table = Matrix.create(url('/data/USArrests.csv'), ',', '"').convert(
                 "Murder": BigDecimal,
                 "Assault": Integer,
                 "UrbanPop": Integer,
                 "Rape": BigDecimal
         )
+        table.setName('USArrests')
+        return table
     }
 
     Matrix fromUrl(String url, String delimiter = ',') {
@@ -66,24 +76,27 @@ class Dataset {
         FileUtil.getResource(path)
     }
 
-    String describe(Matrix table) {
-        def name = table.name
+    static String describe(Matrix table) {
+        describe(table.name)
+    }
+
+    static String describe(String tableName) {
+        def name = tableName.toLowerCase()
         if (name == 'mtcars') return descMtcars()
         if (name == 'iris') return descIris()
-        if (name == 'PlantGrowth') return descPlanthGrowth()
-        if (name == 'ToothGrowth') return descToothGrowth()
-        if (name == 'USArrests') return descUsArrests()
-        return "Unknown table: $name: ${table.toString()}"
+        if (name == 'plantgrowth') return descPlantGrowth()
+        if (name == 'toothgrowth') return descToothGrowth()
+        if (name == 'usarrests') return descUsArrests()
+        return "Unknown table: ${tableName}"
     }
 
 
 
-    String descMtcars() {
+    static String descMtcars() {
         return '''
-        mtcars: Motor Trend Car Road Tests
-        The data was extracted from the 1974 Motor Trend US magazine, 
-        and comprises fuel consumption and 10 aspects of automobile design 
-        and performance for 32 automobiles (1973–74 models)
+        The mtcars (Motor Trend Car Road Tests) dataset was extracted from the 1974 Motor Trend US magazine, 
+        and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles 
+        (1973–1974 models)
 
         Variables:
         mpg: Miles/(US) gallon
@@ -97,13 +110,13 @@ class Dataset {
         am: Transmission (0 = automatic, 1 = manual)
         gear: Number of forward gears
         carb: Number of carburetors
-        '''
+        '''.stripIndent()
     }
 
 
-    String descIris() {
+    static String descIris() {
         return '''
-        The iris data set gives the measurements in centimeters of the variables sepal length, sepal width, 
+        The iris dataset gives the measurements in centimeters of the variables sepal length, sepal width, 
         petal length and petal width, respectively, for 50 flowers from each of 3 species of iris. 
         The species are Iris setosa, versicolor, and virginica.
         
@@ -114,24 +127,25 @@ class Dataset {
         Petal Length: length of the petal in cm,
         Petal Width: width of the petal in cm,
         Species: The species of iris i.e. setosa, versicolor, and virginica
-        '''
+        '''.stripIndent()
     }
 
-    String descPlanthGrowth() {
+    static String descPlantGrowth() {
         return '''
-        Results obtained from an experiment to compare yields (as measured by dried weight of plants) 
+        The plant growth dataset contains results obtained from an experiment to compare yields 
+        (as measured by dried weight of plants) 
         obtained under a control and two different treatment condition.
         
         Variables:
         "": an integer corresponding to a unique observation,
         weight: the dried weight,
         group: ctrl, trt1 or trt2
-        '''
+        '''.stripIndent()
     }
 
-    String descToothGrowth() {
+    static String descToothGrowth() {
         return '''
-        ToothGrowth data set contains the result from an experiment studying the effect of 
+        The ToothGrowth data set contains the result from an experiment studying the effect of 
         vitamin C on tooth growth in 60 Guinea pigs. Each animal received one of three dose levels of 
         vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, 
         orange juice or ascorbic acid (a form of vitamin C and coded as VC).
@@ -141,12 +155,13 @@ class Dataset {
         len: Tooth length
         supp: Supplement type (VC or OJ).
         dose: numeric Dose in milligrams/day
-        '''
+        '''.stripIndent()
     }
 
-    String descUsArrests() {
+    static  String descUsArrests() {
         return '''
-        This data set contains statistics about violent crime rates by us state.
+        The US arrests data set contains statistics in arrests per 100,000 residents for assault, murder, and rape 
+        in each of the 50 US states in 1973.
         
         Variables:
         State: The US state
@@ -154,6 +169,6 @@ class Dataset {
         Assault: Assault arrests (per 100,000)
         UrbanPop: Percent urban population
         Rape: Rape arrests (per 100,000)
-        '''
+        '''.stripIndent()
     }
 }
