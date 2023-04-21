@@ -50,12 +50,22 @@ class DatasetTest {
     }
 
     @Test
-    void usArrests() {
+    void testUsArrests() {
         def usArrests = Dataset.usArrests()
         assertEquals(50, usArrests.rowCount())
         assertEquals(5, usArrests.columnCount())
         assertEquals(389.4, Stat.sum(usArrests['Murder']), 'sum of Murder')
         assertEquals(Dataset.descUsArrests(), Dataset.describe(usArrests))
         assertEquals(Dataset.descUsArrests(), Dataset.describe('usArrests'))
+    }
+
+    @Test
+    void testMpg() {
+        def mpg = Dataset.mpg()
+        assertEquals(234, mpg.rowCount())
+        assertEquals(11, mpg.columnCount())
+        assertEquals(812.4, Stat.sum(mpg['displ']), 'sum of displ')
+        assertEquals(Dataset.descMpg(), Dataset.describe(mpg))
+        assertEquals(Dataset.descMpg(), Dataset.describe('mpg'))
     }
 }

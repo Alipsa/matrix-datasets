@@ -1,7 +1,7 @@
 # Datasets
 Common, public domain and oss datasets in Matrix format for Groovy applications running on JDK 17 or later.
 
-Includes mtcars, iris, PlantGrowth, ToothGrowth, and USArrests
+Includes mtcars, iris, PlantGrowth, ToothGrowth, USArrests, and mpg
 
 ## Setup
 Gradle:

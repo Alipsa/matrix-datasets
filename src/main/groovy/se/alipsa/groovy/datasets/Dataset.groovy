@@ -5,6 +5,10 @@ import se.alipsa.groovy.datasets.util.FileUtil
 
 class Dataset {
 
+    /**
+     * Measurements in centimeters of the variables sepal length, sepal width,
+     * petal length and petal width, respectively, for 50 flowers from each of 3 species of iris.
+     */
     static Matrix iris() {
         Matrix table = Matrix.create(url('/data/Iris.csv')).convert(
             Id: Integer,
@@ -18,6 +22,9 @@ class Dataset {
         return table
     }
 
+    /**
+     * Fuel consumption and 10 aspects of automobile design and performance for 32 automobiles
+     */
     static Matrix mtcars() {
         Matrix table = Matrix.create(url('/data/mtcars.csv')).convert(
                 model: String,
@@ -37,6 +44,11 @@ class Dataset {
         return table
     }
 
+    /**
+     * Contains results obtained from an experiment to compare yields
+     * (as measured by dried weight of plants)
+     * obtained under a control and two different treatment conditions
+     */
     static Matrix plantGrowth() {
         Matrix table = Matrix.create(url('/data/PlantGrowth.csv'), ',', '"').convert(
                 id: Integer,
@@ -46,6 +58,10 @@ class Dataset {
         return table
     }
 
+    /**
+     * The result from an experiment studying the effect of
+     * vitamin C on tooth growth in 60 Guinea pigs
+     */
     static Matrix toothGrowth() {
         Matrix table = Matrix.create(url('/data/ToothGrowth.csv'), ',', '"').convert(
                 id: Integer,
@@ -56,6 +72,10 @@ class Dataset {
         return table
     }
 
+    /**
+     * Statistics of arrests per 100,000 residents for assault, murder, and rape
+     * in each of the 50 US states in 1973
+     */
     static Matrix usArrests() {
         Matrix table = Matrix.create(url('/data/USArrests.csv'), ',', '"').convert(
                 "Murder": BigDecimal,
@@ -64,6 +84,28 @@ class Dataset {
                 "Rape": BigDecimal
         )
         table.setName('USArrests')
+        return table
+    }
+
+    /**
+     * Includes information about the fuel economy of popular car models in 1999 and 2008,
+     * collected by the US Environmental Protection Agency, http://fueleconomy.gov.
+     */
+    static Matrix mpg() {
+        Matrix table = Matrix.create(url('/data/mpg.csv'), ',', '"').convert(
+            "manufacturer": String,
+            "model": String,
+            "displ": BigDecimal,
+            "year": Integer,
+            "cyl": Integer,
+            "trans": String,
+            "drv": String,
+            "cty": Integer,
+            "hwy": Integer,
+            "fl": String,
+            "class": String
+        )
+        table.setName('mpg')
         return table
     }
 
@@ -87,6 +129,7 @@ class Dataset {
         if (name == 'plantgrowth') return descPlantGrowth()
         if (name == 'toothgrowth') return descToothGrowth()
         if (name == 'usarrests') return descUsArrests()
+        if (name == 'mpg') return descMpg()
         return "Unknown table: ${tableName}"
     }
 
@@ -134,7 +177,7 @@ class Dataset {
         return '''
         The plant growth dataset contains results obtained from an experiment to compare yields 
         (as measured by dried weight of plants) 
-        obtained under a control and two different treatment condition.
+        obtained under a control and two different treatment conditions.
         
         Variables:
         "": an integer corresponding to a unique observation,
@@ -170,5 +213,27 @@ class Dataset {
         UrbanPop: Percent urban population
         Rape: Rape arrests (per 100,000)
         '''.stripIndent()
+    }
+
+    static String descMpg() {
+        return '''
+        The mpg (miles per gallon) dataset includes information about the fuel economy of popular car models in 1999 and 2008, 
+        collected by the US Environmental Protection Agency, http://fueleconomy.gov.
+        
+        The mpg dataset contains 234 observations of 11 variables:
+        
+        Variables:
+        manufacturer: manufacturer name
+        model: model name, there are 38 models, selected because they had a new edition every year between 1999 and 2008.
+        displ: engine displacement, in litres
+        year: year of manufacture
+        cyl: number of cylinders
+        trans: type of transmission
+        drv: the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd
+        cty: miles per gallon for city driving
+        hwy: miles per gallon for highway driving
+        fl: fuel type
+        class: "type" of car, e.g. two seater, SUV, compact, etc.
+        '''
     }
 }
