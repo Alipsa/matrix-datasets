@@ -30,7 +30,7 @@ dependencies {
     def groovyVersion = '4.0.10'
     def groovy = "org.apache.groovy:groovy:$groovyVersion"
     compileOnly groovy
-    implementation("se.alipsa.groovy:matrix:1.1.0")
+    implementation("se.alipsa.groovy:matrix:1.1.1-SNAPSHOT")
 
     testImplementation groovy
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'

@@ -68,4 +68,14 @@ class DatasetTest {
         assertEquals(Dataset.descMpg(), Dataset.describe(mpg))
         assertEquals(Dataset.descMpg(), Dataset.describe('mpg'))
     }
+
+    @Test
+    void testDiamonds() {
+        def diamonds = Dataset.diamonds()
+        assertEquals(53940, diamonds.rowCount())
+        assertEquals(10, diamonds.columnCount())
+        assertEquals(43040.87, Stat.sum(diamonds['carat']), 'sum of carat')
+        assertEquals(Dataset.descDiamonds(), Dataset.describe(diamonds))
+        assertEquals(Dataset.descDiamonds(), Dataset.describe('diamonds'))
+    }
 }

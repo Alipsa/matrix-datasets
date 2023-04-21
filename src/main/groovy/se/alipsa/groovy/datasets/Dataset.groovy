@@ -92,7 +92,7 @@ class Dataset {
      * collected by the US Environmental Protection Agency, http://fueleconomy.gov.
      */
     static Matrix mpg() {
-        Matrix table = Matrix.create(url('/data/mpg.csv'), ',', '"').convert(
+        return Matrix.create(url('/data/mpg.csv'), ',', '"').convert(
             "manufacturer": String,
             "model": String,
             "displ": BigDecimal,
@@ -104,9 +104,22 @@ class Dataset {
             "hwy": Integer,
             "fl": String,
             "class": String
-        )
-        table.setName('mpg')
-        return table
+        ).withName('mpg')
+    }
+
+    static Matrix diamonds() {
+        return Matrix.create(url('/data/diamonds.csv'), ',', '"').convert(
+            "carat": BigDecimal,
+            "cut": String,
+            "color": String,
+            "clarity": String,
+            "depth": BigDecimal,
+            "table": BigDecimal,
+            "price": Integer,
+            "x": BigDecimal,
+            "y": BigDecimal,
+            "z": BigDecimal
+        ).withName('diamonds')
     }
 
     Matrix fromUrl(String url, String delimiter = ',') {
@@ -118,10 +131,22 @@ class Dataset {
         FileUtil.getResource(path)
     }
 
+    /**
+     * Provides a description of the dataset
+     *
+     * @param table, the dataset to describe
+     * @return a String describing the content of the dataset
+     */
     static String describe(Matrix table) {
         describe(table.name)
     }
 
+    /**
+     * Provides a description of the dataset
+     *
+     * @param tableName the name of the dataset to describe
+     * @return a String describing the content of the dataset
+     */
     static String describe(String tableName) {
         def name = tableName.toLowerCase()
         if (name == 'mtcars') return descMtcars()
@@ -130,6 +155,7 @@ class Dataset {
         if (name == 'toothgrowth') return descToothGrowth()
         if (name == 'usarrests') return descUsArrests()
         if (name == 'mpg') return descMpg()
+        if (name == 'diamonds') return descDiamonds()
         return "Unknown table: ${tableName}"
     }
 
@@ -234,6 +260,22 @@ class Dataset {
         hwy: miles per gallon for highway driving
         fl: fuel type
         class: "type" of car, e.g. two seater, SUV, compact, etc.
-        '''
+        '''.stripIndent()
+    }
+
+    static String descDiamonds() {
+        return '''
+        Diamond price and quality information for ~54,000 diamonds obtained from AwesomeGems.com on July 28, 2005
+
+        Variables:
+        price: price in US dollars (\\$326--\\$18,823)
+        carat: weight of the diamond (0.2--5.01)
+        cut: quality of the cut (Fair, Good, Very Good, Premium, Ideal)
+        color: diamond colour, from J (worst) to D (best)
+        clarity: a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
+        x: length in mm (0--10.74)
+        y: width in mm (0--58.9)
+        z: depth in mm (0--31.8)
+        '''.stripIndent()
     }
 }
