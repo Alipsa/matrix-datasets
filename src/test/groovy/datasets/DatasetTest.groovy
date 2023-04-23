@@ -1,5 +1,7 @@
 package datasets
 
+import java.math.RoundingMode
+
 import static org.junit.jupiter.api.Assertions.*
 
 import org.junit.jupiter.api.Test
@@ -77,5 +79,89 @@ class DatasetTest {
         assertEquals(43040.87, Stat.sum(diamonds['carat']), 'sum of carat')
         assertEquals(Dataset.descDiamonds(), Dataset.describe(diamonds))
         assertEquals(Dataset.descDiamonds(), Dataset.describe('diamonds'))
+    }
+
+    @Test
+    void testMapDataCounty() {
+        def michigan = Dataset.mapData('county', 'michigan')
+        assertEquals(1471, michigan.rowCount(), "county, michigan num rows")
+        assertEquals(65938.658821106,
+            Stat.sum(michigan['lat']).setScale(9, RoundingMode.HALF_EVEN),
+            "county, michigan, sum of lat"
+        )
+    }
+
+    @Test
+    void testMapDataFrance() {
+        def france = Dataset.mapData('france')
+        assertEquals(13353, france.rowCount(), "france number of rows")
+        assertEquals(32828.4454960893,
+            Stat.sum(france["long"]).setScale(10, RoundingMode.HALF_EVEN),
+            "france, sum of long"
+        )
+    }
+
+    @Test
+    void testMapDataItaly() {
+        def italy = Dataset.mapData('italy')
+        assertEquals(10284, italy.rowCount(), "italy number of rows")
+        assertEquals(123984.6834597588,
+            Stat.sum(italy["long"]).setScale(10, RoundingMode.HALF_EVEN),
+            "italy, sum of long")
+    }
+
+    @Test
+    void testMapDataNz() {
+        def nz = Dataset.mapData('nz')
+        assertEquals(1552, nz.rowCount(), "nz, number of rows")
+        def nzArapawa = Dataset.mapData('nz', 'Arapawa.Island')
+        assertEquals(11, nzArapawa.rowCount(), "nzArapawa number of rows")
+        assertEquals(-453.1090660095,
+            Stat.sum(nzArapawa["lat"]).setScale(10, RoundingMode.HALF_EVEN),
+            "nzArapawa, sum of lat")
+    }
+
+    @Test
+    void testMapDataState() {
+        def state = Dataset.mapData('state')
+        assertEquals(15537, state.rowCount(), "state, number of rows")
+        def oregon = Dataset.mapData('state', 'oregon')
+        assertEquals(236, oregon.rowCount(), "Oregon number of rows")
+        assertEquals(10591.1076698303,
+            Stat.sum(oregon["lat"]).setScale(10, RoundingMode.HALF_EVEN),
+            "oregon, sum of lat")
+    }
+
+    @Test
+    void testMapDataUsa() {
+        def us = Dataset.mapData('usa')
+        assertEquals(7243, us.rowCount(), "usa, number of rows")
+        def manhattan = Dataset.mapData('usa', 'manhattan')
+        assertEquals(16, manhattan.rowCount(), "Manhattan number of rows")
+        assertEquals(652.4327774048,
+            Stat.sum(manhattan["lat"]).setScale(10, RoundingMode.HALF_EVEN),
+            "manhattan, sum of lat")
+    }
+
+    @Test
+    void testMapDataWorld() {
+        def world = Dataset.mapData('world')
+        assertEquals(99338, world.rowCount(), "world, number of rows")
+        def sweden = Dataset.mapData('world', 'Sweden')
+        assertEquals(593, sweden.rowCount(), "Sweden number of rows")
+        assertEquals(36704.2741737366,
+            Stat.sum(sweden["lat"]).setScale(10, RoundingMode.HALF_EVEN),
+            "Sweden, sum of lat")
+    }
+
+    @Test
+    void testMapDataWorld2() {
+        def world2 = Dataset.mapData('world2')
+        assertEquals(99385, world2.rowCount(), "world2, number of rows")
+        def sweden = Dataset.mapData('world2', 'Sweden')
+        assertEquals(593, sweden.rowCount(), "Sweden number of rows")
+        assertEquals(36704.2741737366,
+            Stat.sum(sweden["lat"]).setScale(10, RoundingMode.HALF_EVEN),
+            "Sweden, sum of lat")
     }
 }

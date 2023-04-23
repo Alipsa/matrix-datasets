@@ -2,6 +2,7 @@ package se.alipsa.groovy.datasets
 
 import se.alipsa.groovy.matrix.Matrix
 import se.alipsa.groovy.datasets.util.FileUtil
+import se.alipsa.groovy.matrix.Stat
 
 class Dataset {
 
@@ -122,9 +123,55 @@ class Dataset {
         ).withName('diamonds')
     }
 
-    Matrix fromUrl(String url, String delimiter = ',') {
+    static Matrix fromUrl(String url, String delimiter = ',', String stringQuote = '') {
         URL u = new URL(url)
-        return Matrix.create(u, delimiter)
+        return Matrix.create(u, delimiter, stringQuote)
+    }
+
+    static Matrix mapData(String datasetName, String region = null, boolean exact = false) {
+        if (datasetName == null) {
+            throw new IllegalArgumentException("dataset name cannot be null")
+        }
+        datasetName = datasetName.toLowerCase()
+        if (exact && datasetName == 'county' || !exact && datasetName.startsWith('co'))
+            return mapDataSet('/data/maps/map_county.csv', region)
+        if (exact && datasetName == 'france' || !exact && datasetName.startsWith('fr'))
+            return mapDataSet('/data/maps/map_france.csv', region)
+        if (exact && datasetName == 'italy' || !exact && datasetName.startsWith('it'))
+            return mapDataSet('/data/maps/map_italy.csv', region)
+        if (exact && datasetName == 'nz' || !exact && datasetName.startsWith('nz'))
+            return mapDataSet('/data/maps/map_nz.csv', region)
+        if (exact && datasetName == 'state' || !exact && datasetName.startsWith('st'))
+            return mapDataSet('/data/maps/map_state.csv', region)
+        if (exact && datasetName == 'usa' || !exact && datasetName.startsWith('us'))
+            return mapDataSet('/data/maps/map_usa.csv', region)
+        if (datasetName == 'world')
+            return mapDataSet('/data/maps/map_world.csv', region)
+        if (datasetName == 'world2')
+            return mapDataSet('/data/maps/map_world2.csv', region)
+        throw new IllegalArgumentException("no map data exists for $datasetName")
+    }
+
+    static Matrix mapDataSet(String filePath, String region = null) {
+        Matrix ds = Matrix.create(url(filePath), ',', '"').convert(
+            "long": BigDecimal,
+            "lat": BigDecimal,
+            "group": Integer,
+            "order": Integer,
+            "region": String,
+            "subregion": String
+        )
+        if (region == null) {
+            return ds
+        }
+        def sub = ds.subset("region", {it == region})
+        def minOrder = Stat.min(sub['order']) - 1
+        def minGroup = Stat.min(sub['group']) - 1
+        return sub.apply(
+            'order', { it - minOrder }
+        ).apply(
+            'group', { it - minGroup }
+        ).sort('order')
     }
 
     private static URL url(String path) {
