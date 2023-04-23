@@ -203,6 +203,7 @@ class Dataset {
         if (name == 'usarrests') return descUsArrests()
         if (name == 'mpg') return descMpg()
         if (name == 'diamonds') return descDiamonds()
+        if (name == 'mapdata' || name == 'map_data') return descMapData()
         return "Unknown table: ${tableName}"
     }
 
@@ -323,6 +324,40 @@ class Dataset {
         x: length in mm (0--10.74)
         y: width in mm (0--58.9)
         z: depth in mm (0--31.8)
+        '''.stripIndent()
+    }
+
+    static String descMapData() {
+        return '''
+        Map dataset names:
+        county: This database produces a map of the counties of the United States mainland generated from 
+        the US Department of the Census data
+        
+        france: This france database comes from the NUTS III (Tertiary Administrative Units of the European Community) 
+        database of the United Nations Environment Programme (UNEP) GRID-Geneva data sets (extracted 1989). 
+        
+        italy: This italy database comes from the NUTS III (Tertiary Administrative Units of the European Community) 
+        database of the United Nations Environment Programme (UNEP) GRID-Geneva data sets (extracted 1989).
+        
+        nz:  The nz database is a New Zealand Basic Map and includes the 3 main Islands and 19 smaller coastal islands.
+        
+        state: map of the states of the United States mainland generated from US Department of the Census data
+        
+        usa:  map of the United States mainland generated from US Department of the Census data
+        
+        world: Low resolution World Map. This world map (from 2013) is imported from the public domain 
+        Natural Earth project (the 1:50m resolution version)
+        
+        world2: Pacific Centric Low resolution World Map. This is an alternative version of the world database 
+        based on latitudes [0, 360), which then has the Pacific Ocean in the centre of the map.
+        
+        Variables:
+        long: BigDecimal, the longitude
+        lat: BigDecimal, the latitude
+        group: Integer, a numeric equivalent to the region 
+        order: Integer, a sequence number
+        region: String, a part of the map area
+        subregion: String, a part of the region
         '''.stripIndent()
     }
 }
