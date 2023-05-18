@@ -1,19 +1,19 @@
 # Matrix Datasets
 Common, public domain and oss datasets in Matrix format for Groovy applications running on JDK 17 or later.
 
-Includes mtcars, iris, PlantGrowth, ToothGrowth, USArrests, and mpg
+Includes mtcars, iris, PlantGrowth, ToothGrowth, USArrests, diamonds, mpg, and map data
 
 ## Setup
 Gradle:
 ```groovy
-implementation 'se.alipsa.groovy:matrix-datasets:1.0.0'
+implementation 'se.alipsa.groovy:matrix-datasets:1.0.1'
 ```
 Maven:
 ```xml
 <dependency>
     <groupId>se.alipsa.groovy</groupId>
     <artifactId>matrix-datasets</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 

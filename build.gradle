@@ -12,7 +12,7 @@ plugins {
 }
 
 group 'se.alipsa.groovy'
-version '1.0.1-SNAPSHOT'
+version '1.0.1'
 description = "Groovy library common public domain and oss data in matrix format)"
 
 repositories {
@@ -27,15 +27,15 @@ java {
 }
 
 dependencies {
-    def groovyVersion = '4.0.10'
+    def groovyVersion = '4.0.12'
     def groovy = "org.apache.groovy:groovy:$groovyVersion"
     compileOnly groovy
-    compileOnly("se.alipsa.groovy:matrix:1.1.1-SNAPSHOT")
+    compileOnly("se.alipsa.groovy:matrix:1.1.1")
 
     testImplementation groovy
-    testImplementation("se.alipsa.groovy:matrix:1.1.1-SNAPSHOT")
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation("se.alipsa.groovy:matrix:1.1.1")
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 }
 
 test {
@@ -77,13 +77,13 @@ test {
 
 //Maven Central uploads
 task javadocJar(type: Jar, dependsOn: groovydoc) {
-    archiveClassifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from groovydoc.destinationDir
 }
 
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier = 'sources'
+    archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
@@ -102,11 +102,11 @@ publishing {
             pom {
                 name = 'Common datasets'
                 description = "${project.description}"
-                url = "https://github.com/Alipsa/datasets"
+                url = "https://github.com/Alipsa/matrix-datasets"
                 licenses {
                     license {
                         name = 'MIT License'
-                        url = 'https://raw.githubusercontent.com/Alipsa/datasets/master/LICENSE'
+                        url = 'https://raw.githubusercontent.com/Alipsa/matrix-datasets/master/LICENSE'
                     }
                 }
                 developers {
@@ -116,9 +116,9 @@ publishing {
                     }
                 }
                 scm {
-                    url = 'https://github.com/Alipsa/datasets/tree/master'
-                    connection = 'scm:git:https://github.com/Alipsa/datasets.git'
-                    developerConnection = 'scm:git:https://github.com/Alipsa/datasets.git'
+                    url = 'https://github.com/Alipsa/matrix-datasets/tree/master'
+                    connection = 'scm:git:https://github.com/Alipsa/matrix-datasets.git'
+                    developerConnection = 'scm:git:https://github.com/Alipsa/matrix-datasets.git'
                 }
             }
         }
@@ -131,5 +131,23 @@ signing {
         sign publishing.publications.maven
     } else {
         project.logger.lifecycle("signing.keyId is not defined, skipping signing of artifacts...")
+    }
+}
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+// https://github.com/ben-manes/gradle-versions-plugin
+tasks.named("dependencyUpdates").configure {
+    resolutionStrategy {
+        componentSelection {
+            all {
+                if (isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)) {
+                    reject('Release candidate')
+                }
+            }
+        }
     }
 }
