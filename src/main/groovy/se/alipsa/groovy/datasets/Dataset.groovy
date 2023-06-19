@@ -11,7 +11,7 @@ class Dataset {
      * petal length and petal width, respectively, for 50 flowers from each of 3 species of iris.
      */
     static Matrix iris() {
-        Matrix table = Matrix.create(url('/data/Iris.csv')).convert(
+        Matrix table = Matrix.create(url('/data/iris.csv')).convert(
             Id: Integer,
             'Sepal Length': BigDecimal,
             'Sepal Width': BigDecimal,

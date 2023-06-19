@@ -14,10 +14,20 @@ class DatasetTest {
     void testIris() {
         Matrix iris = Dataset.iris()
         assertEquals(150, iris.rowCount(), 'number of rows')
-        assertEquals(6, iris.columnCount(), 'number of columns')
+        assertEquals(5, iris.columnCount(), 'number of columns')
         assertEquals(876.5, Stat.sum(iris['Sepal Length']))
         assertEquals(Dataset.descIris(), Dataset.describe(iris))
         assertEquals(Dataset.descIris(), Dataset.describe('iris'))
+        assertEquals(['Sepal Length','Sepal Width','Petal Length','Petal Width','Species'], iris.columnNames())
+        def speciesIdx = iris.columnIndex("Species")
+        def setosa = iris.subset {
+            it[speciesIdx] == 'setosa'
+        }
+        def virginica = iris.subset {
+            it[speciesIdx] == 'virginica'
+        }
+        assertEquals(1.462, Stat.mean(setosa['Petal Length']))
+        assertEquals(5.552, Stat.mean(virginica['Petal Length']))
     }
 
 
