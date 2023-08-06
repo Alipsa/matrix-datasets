@@ -11,7 +11,7 @@ plugins {
 }
 
 group 'se.alipsa.groovy'
-version '1.0.2'
+version '1.0.3-SNAPSHOT'
 description = "Groovy library common public domain and oss data in matrix format)"
 
 repositories {
@@ -140,6 +140,7 @@ def isNonStable = { String version ->
 }
 // https://github.com/ben-manes/gradle-versions-plugin
 tasks.named("dependencyUpdates").configure {
+    gradleReleaseChannel = "current"
     resolutionStrategy {
         componentSelection {
             all {
