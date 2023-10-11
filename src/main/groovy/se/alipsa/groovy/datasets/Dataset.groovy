@@ -171,7 +171,7 @@ class Dataset {
             'order', { it - minOrder }
         ).apply(
             'group', { it - minGroup }
-        ).sort('order')
+        ).orderBy('order')
     }
 
     private static URL url(String path) {
